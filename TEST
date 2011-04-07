@@ -1,0 +1,2 @@
+util/cleanup-snapshots
+perl "$@" -Ilib bin/replicator -v2 -x -C t.dat/test.ini

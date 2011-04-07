@@ -1,0 +1,10 @@
+
+Features you would expect this to have that it does not:
+
+1. Cleanup of old snapshots on the remote side is not implemented at all
+
+2. Cleanup of old snapshots on the local side is implemented, but
+disabled at present.  Instead, it logs a message about which snapshots
+it would have destroyed, had that been enabled.
+
+

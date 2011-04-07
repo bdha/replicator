@@ -1,0 +1,84 @@
+DO NOT READ THIS FILE
+
+IT IS THE DEVELOPER'S NOTES TO HIMSELF
+
+================================================================
+
+TO DO 
+
+* a strftime escape that generates a sequence number
+
+* quit action need not wait for end of "abide" task  (How?  Fake "is_idle" return?)
+
+* Should only be dumped one at a time if this is not the case.
+
+* Finish support for * in source names
+
+* Async child processes should reset the signal handlers before doing real work
+
+* child processes should release semaphore file?
+
+* rename_to configuration option to control remote_host dataset name
+
+* snapshot dumper should skip dumping snapshots that exist already
+
+* timing on abide() is a little wrong: if the replication finishes
+  within 1 sec, the abide calculation comes up with 0 instead of with
+  (interval).  Filling an agenda should fill set a nominal start time,
+  which should be used for timestamps and abides, in place of the real
+  time.
+
+* The "require"s in the various factory methods are going to run into
+  trouble if the program chdir's to its home directory and the factory
+  modules are not on the global system path.  Add a libdir config option.
+
+  o Done 2010-11-11
+
+* Snapshots should be objects.  Then consolidate a bunch of
+  pattern-matching code and functions like _snapname.
+
+================================================================
+
+Split ZFS actions out of AgendaManager.  When an agenda is created, it
+should be supplied with a TaskGenerator object that generates task
+lists.  Then you can spin these off into a separate module.
+
+Seems to have been done on branch AM-split, back in May!  2010-11-11.
+
+================================================================
+
+* What does the app do?
+
+** Start up and handle config options and lockout
+** Load config file  (-C configdir)
+** Daemonize unless -x; save PID in /var
+
+** An object represents the current status of each group
+
+================================================================
+
+* Typical config file
+
+home "/var/tmp/replicator"  # Save pid file
+ssh_command "ssh -o ConnectionAttempts=2 -o ConnectTimeout=10 -o BatchMode=yes"
+frequency "10m"  # This option is inherited by all groups where not overridden
+
+# A group is processed in parallel with other groups,
+# but sources are processed serially
+group "boxone" {   # name is optional
+  source "tank/boxone/*"        # multiple sources are allowed
+  remote_host "host1.example.com"  # remote_host HOST
+  target "tank/boxone"          # If omitted, assume target is the same
+  retire_after "12h"             # Destroy snapshots older than this
+                                 # (What if the new ones aren't working?)  
+  max_count 73                   # Keep around no more than 73 snapshots  
+  name "repl-%T"                 # What else besides %T?  use strftime.
+
+  group "boxone-special" { ... }
+
+}
+
+group "boxtwo" { 
+  ...
+
+}

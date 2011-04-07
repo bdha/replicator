@@ -1,0 +1,90 @@
+
+OVERVIEW
+
+Configuration files can bet written in XML, YAML, JSON, Apache-style,
+or INI format.  These examples will be in INI format.
+
+Configuration consists of a global section, followed by one section
+for each "group".  A group is a collection of filesystems that should
+*not* be backed up in parallel.  Replication of each group proceeds in
+parallel, but with a group only one filesystem is backed up at a time.
+
+GROUP CONFIGURATION
+
+      [group:depot]
+      source=rpool/zones/depot/tank/*
+      remote_host=recon.pobox.com
+      target=rpool/zones/recon/tank
+      snapshot_name=mjd-%Y%m%d
+
+Group sections should be named "group:<name>".  The name is for human
+consumption only.  It appears in log messages.  
+
+A group must have at least one source.  Each source names one or more
+filesystems that will be replicated.  The source may end with a *,
+which is taken as a wildcard.  At present, * is only supported at the
+end of the source path.  At present, multiple sources per group are
+not supported.
+
+The remote_host is the name of the zone onto which the snapshots will
+be copied.  The target is the filesystem path onto which the snapshots
+will be copied.
+
+The snapshot_name is the format to use for snapshot names.  It
+supports %x-escapes as described in strftime(3).  Additionally, the
+escape "%i" is an abbreviation for "%Y%m%d%H%M%S".
+
+       retire_after=(never)
+
+Destroy old snapshots when they are this old.  The argument has the
+form 37s, 37m, 37h, 37d.  Just "37" means "37s".
+
+       max_count=(all)
+
+The maximum number of snapshots to keep for each filesystem in this
+group.  If there are more than this many, the oldest will be
+discarded, even if they are not older than the retirement age.   The
+default is to only destroy snapshots that are older than the
+retirement age.
+
+       frequency=10s
+
+How often to create snapshots for this group.  The default is to
+create them very frequently.  The argument format is the same as
+retire_after.  
+
+       test_mode=0
+
+In test mode, snapshots will not actually be destroyed.
+
+GLOBAL CONFIGURATION
+
+Any group configuration directive can appear in the global section,
+where it becomes the default for all groups.  This is probably most
+useful for the snapshot_name option.
+
+       home=/
+
+Home directory.  The daemon will run in this directory; relative paths
+in the configuration file will be interpreted relative to this
+directory.
+
+       bin=$home/bin
+
+Extra path to search for executables.  This is principally used to
+locate zfs-ssh, which is the wrapper command used for executing ssh,
+but it will also be searched for any other remote commands run by
+zfs-mgr.  You may supply multiple paths separated by colons.  The
+default is the 'bin' subdirectory of whatever the 'home' directory is.
+
+       pid_file=/var/run/zfs-mgr.pid
+
+Where to put the pid file.
+
+       ssh_command=ssh -o ConnectionAttempts=2 -o ConnectTimeout=10 -o BatchMode=yes
+
+This is unimplemented at present.
+
+       libdirs=dir1:dir2:...
+
+These directories are searched first for plugin modules.

@@ -1,0 +1,13 @@
+
+On receiving SIGTERM, the daemon will terminate all its subprocesses,
+and exit as quickly as possible.
+
+On receiving SIGUSR1, the daemon will wait for all groups to finish
+replicating, and then will exit.
+
+If an unexpected error occurs during any part of the replication
+process, the daemon will log a report, and will stop replicating that
+group.  Replication of other groups will continue normally.  To
+restart replicating the stopped groups, send the daemon SIGUSR2.
+
+

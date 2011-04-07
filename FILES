@@ -1,0 +1,3 @@
+echo bin/replicator
+find t -name '*.t'
+find lib -name '*.pm'

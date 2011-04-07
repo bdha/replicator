@@ -1,0 +1,19 @@
+=head1 NAME
+
+replicator - ZFS continual data replication daemon
+
+=head1 SYNOPSIS
+
+	replicator [-1] [-x] [-C config] [-g groupname] [ -vLEVEL ]
+
+-g: replicate only this group (default all groups)
+-1: replicate groups once only, then stop (normally, continue running forever)
+-x: do not detach from terminal; log to STDERR (normally, syslog/daemon)
+-C: configuration from specified file (default /etc/replicator.conf)
+
+-vN: logging level:
+           0 no logging at all
+           1 default level
+           2 voluminous debugging information
+
+=cut

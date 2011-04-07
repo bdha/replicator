@@ -1,0 +1,8 @@
+[group:hostA]
+source=rpool/zones/hostA/tank/*
+remote_host=hostB
+target=rpool/zones/hostB/tank
+snapshot_name=repl-%i
+retire_after=5m
+max_count=50
+frequency=30s

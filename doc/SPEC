@@ -1,0 +1,77 @@
+Goals
+
+     * Manage ZFS snapshots and replication
+     * Ensure replication is working properly
+
+Requirements
+
+     * Daemonizes
+          + Catches signals for "exit after all sends are done" and "stop
+            now and clean up"
+          + Can fork
+               o If multiple datasets are configured to replicate, it
+                 should fire off a send for each
+               o This is somewhat complicated: It should only fork a send
+                 for datasets under seperate hierarchies
+               o See Use Case "multiple datasets"
+     * Simple configuration
+          + Global definitions
+          + Host definitions
+     * Snapshots
+     * Replication
+          + ssh keys or something like mbuffer
+          + Keeps n snapshots around
+          + Can recover from hosed replication
+               o If one side of the replication gets hosed or loses some
+                 new snaps, the program should be smart enough to find the
+                 most recent snapshot common to both sides, and restart
+                 replication from that point
+     * Retirement
+
+Use Cases
+
+Snapshots
+
+   User configures rpool/export/home to get snapshot every 10 minutes.
+
+   Program creates a snapshot rpool/export/home@repl-$TIME every 10
+   minutes.
+
+Retirement
+
+   User configures rpool/export/home@home snapshots to be retired after 12
+   hours.
+
+   Program collects snapshots older than 12 hours at runtime and destroys
+   them.
+
+Replication
+
+   ZFS replication is relatively trivial. You take a snapshot and then use
+   zfs send to send it somewhere. It creates a datastream, which can be
+   dumped into a file, or piped into ssh and then imported on another
+   system via zfs recv.
+
+   The most recent snapshots on each side of the replication stream need
+   to be the same. You can destroy older snapshots (on either side), but
+   the newest must be the same.
+
+Basic Usage
+
+     * tank/listbox is configured to replicate from swarm to shoal:tank
+     * All children of tank/listbox are replicated, using incremental
+       streams
+
+Multiple Datasets
+
+     * tank/listbox and its children are configured to replicate from
+       swarm to shoal:tank
+     * tank/mailstore and its children are configured to replicate from
+       swarm to shoal:tank
+
+   ZFS CDP must be smart enough to see the datasets are in different roots
+   and fork a send for both.
+
+   It should not fork a send for each child filesystem. It should process
+   them serially. (perhaps this should be an option; it may be speed stuff
+   up but create a major I/O hit)

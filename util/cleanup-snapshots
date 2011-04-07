@@ -1,0 +1,5 @@
+#!/bin/sh
+
+for snap in `zfs list -t snapshot  -H -o name | grep mjd-`; do
+  zfs destroy "$snap"
+done

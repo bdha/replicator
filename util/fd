@@ -1,0 +1,8 @@
+#!/icg/bin/perl
+
+my @fd = (fileno(STDIN), fileno(STDOUT), fileno(STDERR));
+open TTY, ">", "/dev/tty" or die;
+print TTY "<<@fd>>\n";
+close TTY;
+exec @ARGV;
+die "Couldn't exec @ARGV: $!";

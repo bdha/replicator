@@ -1,0 +1,16 @@
+#!/usr/bin/perl
+
+use TAP::Harness;
+use File::Find;
+my @tests;
+File::Find::find(\&wanted, "t");
+
+sub wanted {
+#    return unless $File::Find::dir =~ m{^t/(filters|pobox-schema)};
+    return unless /\.t$/;
+    push @tests, $File::Find::name;
+}
+
+my $harness = TAP::Harness->new( { lib => [ 'lib' ] } );
+
+$harness->runtests(sort @tests);

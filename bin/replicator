@@ -1,0 +1,40 @@
+#!/usr/bin/perl
+
+use strict;
+use ICG::Replicator;
+
+my $daemon = ICG::Replicator->new()->options(@ARGV)
+    or usage();
+$daemon->run();
+exit 0;   # Control shold never reach this point
+
+sub usage {
+  print STDERR <<END;
+Usage: replicator [-1] [-x] [-C config] [-g groupname] [ -vLEVEL ]
+
+  -g: replicate only this group (default all groups)
+  -1: replicate groups once only (normally, continue running forever)
+  -x: do not go into the background; log to STDERR
+  -C: configuration from specified file (default ???)
+  -vLEVEL: logging level (0=none, 1=normal, 2=debug) (default 1)
+END
+
+}
+
+=head1 NAME
+
+zfs-cdrc - ZFS continual data replication daemon
+
+=head1 SYNOPSIS
+
+	replicator [-1] [-x] [-C config] [-g groupname] [ -vLEVEL ]
+
+=head1 DESCRIPTION
+
+-g: replicate only this group (default all groups)
+-1: replicate groups once only (normally, continue running forever)
+-x: do not go into the background; log to STDERR
+-C: configuration from specified file (default ???)
+-vLEVEL: logging level (0=none, 1=normal, 2=debug) (default 1)
+
+=cut

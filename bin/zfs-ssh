@@ -1,0 +1,26 @@
+#!/usr/bin/perl
+#
+# This is a wrapper around ssh that ignores transport errors
+#
+use ICG::Async::ShellCommand;
+
+my $ssh = ICG::Async::ShellCommand->new({
+  command => 'ssh',
+  args => [@ARGV],
+  stdin => \*STDIN,
+ }) or die "Couldn't make shell command object";
+
+my $pid = $ssh->start;
+my $res = $ssh->safe_await();
+
+print STDOUT $res->{stdout};
+print STDERR $res->{stderr};
+
+## exit         $res->{exit_status} >> 8;
+warn "zfs-ssh: ssh exited with status " . ($res->{exit_status} >> 8) .
+  "; ignoring\n"
+  unless $res->{exit_status} == 0;
+
+exit 0;
+
+
