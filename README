@@ -1,0 +1,12 @@
+Replicator: ZFS Continuous Replication Daemon
+
+!!! DO _NOT_ USE THIS IN PRODUCTION !!!
+
+This code generally works, but requires a fair amount of hand-holding.
+
+It also needs a _lot_ of testing.
+
+If you have any questions, ask #pobox on irc.perl.org. Pull requests welcome!
+-- 
+Bryan Horstmann-Allen
+bda@icgroup.com
