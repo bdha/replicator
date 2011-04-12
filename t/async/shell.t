@@ -1,14 +1,14 @@
 
 use Test::More tests => 2 + 4 + 7 + 1;
 #use Test::More tests => 1;
-use ICG::Async::ShellCommand;
-use ICG::Async::ShellCommand::Simple;
+use ZFS::Async::ShellCommand;
+use ZFS::Async::ShellCommand::Simple;
 use Time::HiRes;
 
 
 # Trying to check ->finished on a non-started task ought not to fail utterly
 {
-  my $t = ICG::Async::ShellCommand::Simple->new("true");
+  my $t = ZFS::Async::ShellCommand::Simple->new("true");
   ok(! $t->is_started(), "non-started task is_started");
   ok(! $t->is_finished(), "non started task is_finished");
   $t->start;
@@ -18,7 +18,7 @@ use Time::HiRes;
 }
 
 {
-  my $task = ICG::Async::ShellCommand::Simple->new('true');
+  my $task = ZFS::Async::ShellCommand::Simple->new('true');
   ok($task);
   $task->start();
   is_deeply($task->await, { stdout => "", stderr => "", exit_status => 0 });
@@ -26,7 +26,7 @@ use Time::HiRes;
 
 {
   note "sh -c 'exit 1'";
-  my $task = ICG::Async::ShellCommand::Simple->new(q{sh -c 'exit 1'});
+  my $task = ZFS::Async::ShellCommand::Simple->new(q{sh -c 'exit 1'});
   $task->start();
   my $res = eval { $task->await };
   is_deeply($@, { stdout => "", stderr => "", exit_status => 256 });
@@ -34,21 +34,21 @@ use Time::HiRes;
 
 {
   note "echo potato";
-  my $task = ICG::Async::ShellCommand::Simple->new('echo', 'potato');
+  my $task = ZFS::Async::ShellCommand::Simple->new('echo', 'potato');
   $task->start();
   is_deeply($task->await, { stdout => "potato\n", stderr => "", exit_status => 0 });
 }
 
 {
   note "echo potato 1>&2";
-  my $task = ICG::Async::ShellCommand::Simple->new('echo potato 1>&2');
+  my $task = ZFS::Async::ShellCommand::Simple->new('echo potato 1>&2');
   $task->start();
   is_deeply($task->await, { stdout => "", stderr => "potato\n", exit_status => 0 });
 }
 
 {
   note "perl -e";
-  my $task = ICG::Async::ShellCommand::Simple->new('perl -e "print qq{foo\nbar}; die"');
+  my $task = ZFS::Async::ShellCommand::Simple->new('perl -e "print qq{foo\nbar}; die"');
   $task->start();
   my $res = eval { $task->await };
   is_deeply($@, { stdout => "foo\nbar",
@@ -59,7 +59,7 @@ use Time::HiRes;
 
 {
   note "input from string";
-  my $task = ICG::Async::ShellCommand
+  my $task = ZFS::Async::ShellCommand
     ->new({command => 'tr',
            args => [qw([a-z] [A-Z])],
            input => "With\nyour\nmouth!\n"
@@ -79,7 +79,7 @@ use Time::HiRes;
 # to die if the task had never been started
 {
   note "regression f85098";
-  my $task = ICG::Async::ShellCommand::Simple->new('true');
+  my $task = ZFS::Async::ShellCommand::Simple->new('true');
   ok($task);
   $task->start();
   sleep 1;
@@ -95,7 +95,7 @@ use Time::HiRes;
   my $task = do
     { open my($rd), "echo '$data' | tr . '\\n' |" or die $!;
     #  warn "Pipe from " . fileno($wr) . " to " . fileno($rd) . "\n";
-      ICG::Async::ShellCommand->new({
+      ZFS::Async::ShellCommand->new({
         command => 'tr',
         args => [qw([a-z] [A-Z])],
         stdin => $rd,

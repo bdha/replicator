@@ -1,9 +1,9 @@
 
 use Test::More tests => 6;
-use ICG::ZFSManager;
+use ZFS::Replicator;
 
 {
-  my $z = ICG::ZFSManager->new();
+  my $z = ZFS::Replicator->new();
   ok($z);
   $z->options();
   ok(1);
@@ -11,7 +11,7 @@ use ICG::ZFSManager;
 
 # Test config file loading
 {
-  my $z = ICG::ZFSManager->new();
+  my $z = ZFS::Replicator->new();
   $z->set_conf_file("t.dat/c1.ini");
   ok($z->configure(), "configured");
   is($z->conf->get('age'), 16, "configured value");
@@ -21,7 +21,7 @@ use ICG::ZFSManager;
 {
   use POSIX 'tmpnam';
   my ($tmp) = tmpnam();
-  my ($z1, $z2) = (ICG::ZFSManager->new(), ICG::ZFSManager->new());
+  my ($z1, $z2) = (ZFS::Replicator->new(), ZFS::Replicator->new());
   $z1->set_conf(MockConfig->new($tmp));
   $z2->set_conf(MockConfig->new($tmp));
   $z1->lock_pidfile();

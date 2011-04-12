@@ -1,9 +1,9 @@
 
 use Test::More tests => 9 + 6 + 7 + 7;
-use ICG::ZFSManager::Config;
+use ZFS::Replicator::Config;
 
 {
-  my $c = ICG::ZFSManager::Config->new_from_file("t.dat/c1.ini");
+  my $c = ZFS::Replicator::Config->new_from_file("t.dat/c1.ini");
   ok($c);
   is($c->get("foo"), "bar", "get");
   is($c->get("XXX"), undef, "get missing");
@@ -16,12 +16,12 @@ use ICG::ZFSManager::Config;
 }
 
 {
-  use ICG::ZFSManager::Group;
+  use ZFS::Replicator::Group;
 
-  my $c = ICG::ZFSManager::Config->new_from_file("t.dat/c2.ini");
+  my $c = ZFS::Replicator::Config->new_from_file("t.dat/c2.ini");
   ok($c);
 
-  $c->build_groups('ICG::ZFSManager::Group');
+  $c->build_groups('ZFS::Replicator::Group');
   is(join(" ", sort(map $_->name, $c->groups)), "green red", "Config->groups");
 
   my $red = $c->group("red");
@@ -32,7 +32,7 @@ use ICG::ZFSManager::Config;
 }
 
 {
-  my $c = ICG::ZFSManager::Config->new_from_file("t.dat/time.ini");
+  my $c = ZFS::Replicator::Config->new_from_file("t.dat/time.ini");
   ok($c);
   is($c->get_time('time1'),      5, "no suffix");
   is($c->get_time('time2'),     10, "s suffix");
@@ -44,7 +44,7 @@ use ICG::ZFSManager::Config;
 }
 
 {
-  my $c = ICG::ZFSManager::Config->new_from_file("t.dat/libdir.ini");
+  my $c = ZFS::Replicator::Config->new_from_file("t.dat/libdir.ini");
   ok($c);
   is_deeply([$c->get_dirs('path0')], [], "no dirs");
   is_deeply([$c->get_dirs('path1')], ["foo"], "one dir");

@@ -2,9 +2,9 @@
 #
 # This is a wrapper around ssh that ignores transport errors
 #
-use ICG::Async::ShellCommand;
+use ZFS::Async::ShellCommand;
 
-my $ssh = ICG::Async::ShellCommand->new({
+my $ssh = ZFS::Async::ShellCommand->new({
   command => 'ssh',
   args => [@ARGV],
   stdin => \*STDIN,

@@ -1,12 +1,12 @@
 
 use Test::More tests => 4 + 1;
-use ICG::ZFSManager::ZFSLister;
+use ZFS::Replicator::ZFSLister;
 use t::lib::FakeZFSLister;
 use strict;
 use warnings;
 
 {
-  my $zl = ICG::ZFSManager::ZFSLister->new();
+  my $zl = ZFS::Replicator::ZFSLister->new();
   ok($zl);
   my $snap = [ 'rpool/zones/depot/tank/home', 'mjd-20100505', 0 ];
   my $target = 'rpool/zones/recon/tank';

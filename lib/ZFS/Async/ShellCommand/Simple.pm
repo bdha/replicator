@@ -1,6 +1,6 @@
 
-package ICG::Async::ShellCommand::Simple;
-use base 'ICG::Async::ShellCommand';
+package ZFS::Async::ShellCommand::Simple;
+use base 'ZFS::Async::ShellCommand';
 use strict;
 use Carp 'croak';
 

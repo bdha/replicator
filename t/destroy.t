@@ -1,14 +1,14 @@
 
-use ICG::ZFSManager::Config;
-use ICG::ZFSManager::Group;
-use ICG::ZFSManager::SnapshotListing;
+use ZFS::Replicator::Config;
+use ZFS::Replicator::Group;
+use ZFS::Replicator::SnapshotListing;
 use Test::More tests => 5 + 12 + 0;
 use Test::Deep;
 use strict;
 use warnings;
 
 sub sn {
-  return ICG::ZFSManager::SnapshotListing->new(
+  return ZFS::Replicator::SnapshotListing->new(
     [ "fs", "mjd-c", 3000 ],
     [ "fs", "mjd-a", 100 ],
     [ "fs", "mjd-b", 200 ],
@@ -23,7 +23,7 @@ my @sn = sort by_date sn()->snapshots; # newest first
 note "** max_count tests";
 {
   my %conf;
-  my $c = ICG::ZFSManager::Group->new_from_hash('test', \%conf);
+  my $c = ZFS::Replicator::Group->new_from_hash('test', \%conf);
 
   for my $i (4, 3, 2, 1) {
     $conf{max_count} = $i;
@@ -38,7 +38,7 @@ note "** max_count tests";
 note "** old age tests";
 {
   my %conf;
-  my $c = ICG::ZFSManager::Group->new_from_hash('test', \%conf);
+  my $c = ZFS::Replicator::Group->new_from_hash('test', \%conf);
   my $now = 10000; # Pretend that the time is 10000
   $c->_force_time($now);
 

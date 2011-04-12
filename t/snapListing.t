@@ -1,12 +1,12 @@
 
 use Test::More tests => 4;
-use ICG::ZFSManager::SnapshotListing;
+use ZFS::Replicator::SnapshotListing;
 
 my @words = qw(the quick brown fox thumps over a lazy trog);
 my @snaps = map [$_, 's1', fake_date($_)], @words;
 my @names = map "$_\@s1", @words;
 
-my $q = ICG::ZFSManager::SnapshotListing->new(@snaps);
+my $q = ZFS::Replicator::SnapshotListing->new(@snaps);
 ok($q);
 is_deeply(scalar($q->names), \@names, "->names");
 is_deeply(scalar($q->snap_names), [("s1") x @words], "->names");

@@ -1,8 +1,8 @@
 
 use Test::More tests => 9;
-use ICG::ZFSManager::SignalManager;
+use ZFS::Replicator::SignalManager;
 
-my $sm = ICG::ZFSManager::SignalManager->new();
+my $sm = ZFS::Replicator::SignalManager->new();
 ok($sm);
 
 ok(! $sm->should_stop_immediately(), "no flag set initially 1");

@@ -1,8 +1,8 @@
 
 use Test::More tests => 21;
-use ICG::ZFSManager::Agenda;
+use ZFS::Replicator::Agenda;
 
-my $q = ICG::ZFSManager::Agenda->new();
+my $q = ZFS::Replicator::Agenda->new();
 ok($q);
 
 my($A, $B, $C) = map MockEvent->new($_), qw(A B C);

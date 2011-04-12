@@ -1,8 +1,8 @@
 
 use Test::More tests => 2;
-use ICG::ZFSManager::ZFSTaskBuilder;
+use ZFS::Replicator::ZFSTaskBuilder;
 
-my $tm = ICG::ZFSManager::ZFSTaskBuilder->new({ group => Gp->new(),
+my $tm = ZFS::Replicator::ZFSTaskBuilder->new({ group => Gp->new(),
                                                 zfs_lister => ZL->new() });
 ok($tm);
 my @tasks = $tm->make_tasks();

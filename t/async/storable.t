@@ -1,7 +1,7 @@
 
 use Test::More tests => 4;
-use ICG::Async::Storable;
-my $ft = ICG::Async::Storable->new();
+use ZFS::Async::Storable;
+my $ft = ZFS::Async::Storable->new();
 ok($ft);
 
 my $fruit = { apple  => [ 'red', 'green' ],

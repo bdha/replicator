@@ -1,10 +1,10 @@
 
 use Test::More tests => 4 + 11;
-use ICG::Async;
+use ZFS::Async;
 
 # Trying to check ->finished on a non-started task ought not to fail utterly
 {
-  my $t = ICG::Async->new(sub { 1 });
+  my $t = ZFS::Async->new(sub { 1 });
   ok(! $t->is_started(), "non-started task is_started");
   ok(! $t->is_finished(), "non started task is_finished");
   $t->start;
@@ -14,7 +14,7 @@ use ICG::Async;
 }
 
 {
-  my $task = ICG::Async->new(sub { return 1 + 1 });
+  my $task = ZFS::Async->new(sub { return 1 + 1 });
   ok($task);
   eval { $task->await() };
   like($@, qr/(not|never) (running|started)/, "forgot to start");
@@ -23,7 +23,7 @@ use ICG::Async;
 }
 
 {
-  my $task = ICG::Async->new(sub { sleep 1; return 1 + 1 });
+  my $task = ZFS::Async->new(sub { sleep 1; return 1 + 1 });
   $task->start();
   is(0 + $task->is_finished, 0, "not finished yet");
   is($task->_saved_data, "", "no data yet");
@@ -41,7 +41,7 @@ use ICG::Async;
   @result = (0) x ($n+1);
   @x = (0, (1) x $n);
   for my $i (1 .. $n) {
-    push @tasks, ICG::Async->new(sub { sleep $i; return $i });
+    push @tasks, ZFS::Async->new(sub { sleep $i; return $i });
   }
   $_->start for @tasks;
   my $unfinished = $n;

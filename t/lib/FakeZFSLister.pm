@@ -1,6 +1,6 @@
 
 package t::lib::FakeZFSLister;
-use base 'ICG::ZFSManager::ZFSLister';
+use base 'ZFS::Replicator::ZFSLister';
 use Carp qw(croak);
 
 #

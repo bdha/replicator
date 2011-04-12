@@ -1,6 +1,6 @@
 
 use Test::More 'no_plan';
-use ICG::ZFSManager::Util '-all';
+use ZFS::Replicator::Util '-all';
 use strict;
 use warnings;
 
@@ -8,7 +8,7 @@ while (<DATA>) {
   next unless /\S/;
   chomp;
   my ($in, $exp) = split /\s+/, $_, 2;
-  is(ICG::ZFSManager::Util::pat_to_regex($in), "\\A$exp\\z");
+  is(ZFS::Replicator::Util::pat_to_regex($in), "\\A$exp\\z");
 }
 
 __DATA__

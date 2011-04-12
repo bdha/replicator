@@ -1,8 +1,8 @@
 
 use Test::More tests => 1 + 3 + 6;
-use ICG::ZFSManager::AgendaManager;
+use ZFS::Replicator::AgendaManager;
 
-my $am = ICG::ZFSManager::AgendaManager->new("FakeAgenda");
+my $am = ZFS::Replicator::AgendaManager->new("FakeAgenda");
 ok($am);
 
 $am->create_agenda("foo", FakeTaskBuilder->new());

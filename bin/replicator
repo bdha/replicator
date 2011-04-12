@@ -1,9 +1,9 @@
 #!/usr/bin/perl
 
 use strict;
-use ICG::Replicator;
+use ZFS::Replicator;
 
-my $daemon = ICG::Replicator->new()->options(@ARGV)
+my $daemon = ZFS::Replicator->new()->options(@ARGV)
     or usage();
 $daemon->run();
 exit 0;   # Control shold never reach this point
